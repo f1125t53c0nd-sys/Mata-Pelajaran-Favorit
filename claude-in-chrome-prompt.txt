@@ -1,0 +1,187 @@
+You are helping me set up the Google Sheet backend for my school project "Favorite Subject". Do the steps below in my Chrome, in order. I am signed in to my Google account in this browser.
+
+GOAL
+Create a Google Sheet, attach a small Google Apps Script to it, deploy the script as a Web app, and give me back the Web app URL (it ends in /exec).
+
+RULES
+- Work in NEW tabs (do not touch my other open tabs). Start by checking my open tabs.
+- Never type or ask for my Google password. If Google asks me to sign in, stop and tell me to sign in, then continue when I say so.
+- When a Google permission / authorization screen appears ("Authorization required", "Review permissions", "Google hasn't verified this app", "Allow"), STOP and tell me exactly which button to click. I will click through those myself. Continue afterwards when I say so.
+- Do not delete anything, do not share the sheet with anyone, and do not change any other Google settings.
+- If something does not look like what I describe, stop and tell me what you see instead of guessing.
+
+STEP 1 - Create the sheet
+1. Open https://sheets.new (a new blank spreadsheet).
+2. Rename the spreadsheet (click the title at the top-left) to:  Favorite Subject - Students
+3. Click cell A1 and type these six headers into A1 to F1, one per cell, pressing Tab between them:
+   Timestamp, Name, Class, FavoriteSubject, Rating, Note
+   Spelling and capital letters must be exactly like that. Leave everything else empty.
+4. Zoom in / read the cells back to confirm A1..F1 contain exactly those six words.
+
+STEP 2 - Open Apps Script from the sheet
+1. In that spreadsheet, click the menu Extensions > Apps Script. (It must be opened from the sheet, not from script.google.com, so the script is attached to the sheet.) It opens in a new tab.
+2. Rename the project (top-left "Untitled project") to:  Favorite Subject Backend
+
+STEP 3 - Put in the code
+1. In the editor, the file Code.gs contains a sample "function myFunction() {}". Replace ALL of it with the code at the bottom of this message (between the lines CODE START and CODE END, not including those two lines).
+2. IMPORTANT: this editor auto-closes brackets and quotes and auto-indents, so typing the code character by character can corrupt it. Prefer this method:
+   - Use your JavaScript tool on the Apps Script tab to set the editor text in one go, for example by looking for the Monaco editor (window.monaco.editor.getModels()[0].setValue(CODE_STRING)) where CODE_STRING is the exact code below.
+   - If that is not possible, click inside the editor, press Ctrl+A, press Delete, and then insert the text in the safest way you can. Never leave the editor with duplicated or missing brackets.
+3. VERIFY: read the editor text back and confirm that (a) it is identical to the code below, (b) it contains "function doPost(e)" and "function doGet(e)", and (c) it is about 127 lines with no duplicated closing brackets. If it is wrong, fix it before continuing.
+4. Save with Ctrl+S (or the disk icon). Make sure there is no red error message.
+
+STEP 4 - Deploy as a Web app
+1. Click the blue "Deploy" button at the top-right > "New deployment".
+2. Click the small gear icon next to "Select type" and choose "Web app".
+3. Fill in:
+   - Description: v1
+   - Execute as: Me (my own email)
+   - Who has access: Anyone
+   (Anyone is intentional: my own server has to be able to call it without signing in. The script only reads and writes this one sheet.)
+4. Click "Deploy".
+5. If Google shows "Authorization required" -> STOP and tell me to click "Authorize access", choose my account, and if it says "Google hasn't verified this app" click "Advanced" and then "Go to Favorite Subject Backend (unsafe)" and "Allow". Continue when I say I'm done.
+6. When the "Deployment successfully updated / created" box shows, copy the "Web app" URL. It looks like https://script.google.com/macros/s/XXXXXXXX/exec . Do NOT copy the "Deployment ID" by mistake. Then click Done.
+
+STEP 5 - Test it
+1. Open a new tab and go to the Web app URL followed by  ?action=list  , for example:
+   https://script.google.com/macros/s/XXXXXXXX/exec?action=list
+2. The page must show exactly this JSON:  {"ok":true,"students":[]}
+   - If you see a Google sign-in page, "Sorry, unable to open the file", or an HTML error page, the deployment access is wrong. Go back to Deploy > Manage deployments > pencil icon > Who has access: Anyone > Version: New version > Deploy, and test again.
+   - If you see {"ok":false,"error":"..."}, tell me the error text.
+
+STEP 6 - Report back to me
+Tell me:
+1. The full Web app URL (the /exec one), on its own line so I can copy it.
+2. The URL of the Google Sheet.
+3. What the test in Step 5 showed.
+Then stop. Do not do anything else.
+
+CODE START
+/**
+ * Code.gs - Google Apps Script backend for the "Favorite Subject" project.
+ *
+ * This script lives INSIDE your Google Sheet (Extensions > Apps Script).
+ * Our Node server talks to it like a tiny API:
+ *
+ *   POST  -> doPost(e)  adds one row to the sheet
+ *   GET   -> doGet(e)   returns every row as JSON
+ *
+ * The sheet must have this header row in row 1:
+ *   Timestamp | Name | Class | FavoriteSubject | Rating | Note
+ *
+ * IMPORTANT: after you change this file you must create a NEW deployment
+ * version (Deploy > Manage deployments > edit > New version), see README.md.
+ */
+
+// Leave empty to use the FIRST tab of the spreadsheet,
+// or write a tab name here, for example: 'Students'
+var SHEET_NAME = '';
+
+// The same limits the website and the Node server use.
+// (subject is 60 because official names like "Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)" are long)
+var LIMITS = { name: 40, className: 20, subject: 60, note: 200 };
+
+/** Find the sheet tab we read from and write to. */
+function getSheet_() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = SHEET_NAME ? spreadsheet.getSheetByName(SHEET_NAME) : spreadsheet.getSheets()[0];
+  if (!sheet) throw new Error('Sheet tab "' + SHEET_NAME + '" was not found.');
+  return sheet;
+}
+
+/** Send a JavaScript object back as JSON. */
+function jsonReply_(object) {
+  return ContentService
+    .createTextOutput(JSON.stringify(object))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+/** Turn any value into clean single-line text. */
+function cleanText_(value) {
+  return String(value === null || value === undefined ? '' : value)
+    .replace(/[\u0000-\u001F\u007F]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Check the incoming profile. Returns an error message, or '' if all is fine.
+ * (The Node server already validated it - this is a second safety net,
+ * in case someone calls the web app URL directly.)
+ */
+function validate_(data) {
+  if (!data.name) return 'Name is required.';
+  if (data.name.length > LIMITS.name) return 'Name is too long.';
+  if (!data.className) return 'Class is required.';
+  if (data.className.length > LIMITS.className) return 'Class is too long.';
+  if (!data.favoriteSubject) return 'Favorite subject is required.';
+  if (data.favoriteSubject.length > LIMITS.subject) return 'Subject is too long.';
+  if (data.note.length > LIMITS.note) return 'Note is too long.';
+  if (data.rating !== '' && !/^[1-5]$/.test(data.rating)) return 'Rating must be 1 to 5 or empty.';
+  return '';
+}
+
+/** POST: add a new row. */
+function doPost(e) {
+  // A "lock" makes sure two students submitting at once do not clash.
+  var lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(10000);
+
+    var raw = JSON.parse(e.postData.contents);
+    var data = {
+      name: cleanText_(raw.name),
+      className: cleanText_(raw.className),
+      favoriteSubject: cleanText_(raw.favoriteSubject),
+      rating: raw.rating === null || raw.rating === undefined ? '' : cleanText_(raw.rating),
+      note: cleanText_(raw.note)
+    };
+
+    var problem = validate_(data);
+    if (problem) return jsonReply_({ ok: false, error: problem });
+
+    var sheet = getSheet_();
+    var row = sheet.getLastRow() + 1;
+    var values = [[new Date().toISOString(), data.name, data.className, data.favoriteSubject, data.rating, data.note]];
+
+    // Format the cells as plain text BEFORE writing, so text such as "=1+1"
+    // is stored as text and never runs as a spreadsheet formula.
+    var range = sheet.getRange(row, 1, 1, 6);
+    range.setNumberFormat('@');
+    range.setValues(values);
+
+    return jsonReply_({ ok: true });
+  } catch (err) {
+    return jsonReply_({ ok: false, error: String(err && err.message ? err.message : err) });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/** GET: return all rows. */
+function doGet(e) {
+  try {
+    var sheet = getSheet_();
+    var lastRow = sheet.getLastRow();
+    if (lastRow < 2) return jsonReply_({ ok: true, students: [] }); // only the header row
+
+    var rows = sheet.getRange(2, 1, lastRow - 1, 6).getValues();
+    var students = rows
+      .filter(function (r) { return r[1] !== ''; }) // skip rows without a name
+      .map(function (r) {
+        return {
+          timestamp: r[0] instanceof Date ? r[0].toISOString() : String(r[0]),
+          name: String(r[1]),
+          className: String(r[2]),
+          favoriteSubject: String(r[3]),
+          rating: r[4] === '' ? null : Number(r[4]),
+          note: String(r[5])
+        };
+      });
+
+    return jsonReply_({ ok: true, students: students });
+  } catch (err) {
+    return jsonReply_({ ok: false, error: String(err && err.message ? err.message : err) });
+  }
+}
+CODE END

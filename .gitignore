@@ -1,0 +1,19 @@
+# Your private settings (contains your Google Apps Script URL).
+# Anyone with that URL can add rows to your sheet, so it must NOT go on GitHub.
+# Copy config.example.json to config.json to create your own.
+config.json
+
+# Temporary file the server writes while saving
+data/*.tmp
+
+# Helper prompt used during setup (not part of the website)
+claude-in-chrome-prompt.txt
+
+# Node / editor / OS clutter
+node_modules/
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.log

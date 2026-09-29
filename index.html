@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="home.docTitle">Favorite Subject - Class Yearbook</title>
+  <meta name="description" content="Tell the class your favorite school subject and see everyone else's profile card." data-i18n-attr="content:home.desc">
+  <meta name="theme-color" content="#38B6FF">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-home">
+  <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
+
+  <!-- ===== HERO: poster-style cover ===== -->
+  <header class="hero">
+    <nav class="site-nav" aria-label="Main" data-i18n-attr="aria-label:nav.label">
+      <a class="site-nav__brand" href="index.html"><span aria-hidden="true">★</span> <span data-i18n="nav.brand">Fav Subject</span></a>
+      <ul class="site-nav__links">
+        <li><a href="index.html" aria-current="page" data-i18n="nav.home">Home</a></li>
+        <li><a href="input.html" data-i18n="nav.fillIn">Fill In</a></li>
+        <li><a href="profiles.html" data-i18n="nav.profiles">Profiles</a></li>
+      </ul>
+      <div class="site-nav__tools">
+        <span class="mode-badge" id="modeBadge" data-mode="loading" title="Where profiles are saved" data-i18n-attr="title:mode.title">
+          <span class="mode-badge__dot" aria-hidden="true"></span>
+          <span class="mode-badge__text">Checking...</span>
+        </span>
+        <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label:lang.label">
+          <button class="lang-switch__btn" type="button" data-lang="id" lang="id" title="Bahasa Indonesia">ID</button>
+          <button class="lang-switch__btn" type="button" data-lang="en" lang="en" title="English">EN</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Decorations (purely visual, hidden from screen readers) -->
+    <div class="hero__decor" aria-hidden="true">
+      <span class="cloud cloud--1"></span>
+      <span class="cloud cloud--2"></span>
+      <img class="deco deco--sparkle deco--s1" src="img/sparkle.svg" alt="">
+      <img class="deco deco--sparkle deco--s2" src="img/sparkle.svg" alt="">
+      <img class="deco deco--sparkle deco--s3" src="img/sparkle.svg" alt="">
+      <img class="deco deco--book" src="img/book.svg" alt="">
+      <img class="deco deco--pencil" src="img/pencil.svg" alt="">
+      <img class="deco deco--calculator" src="img/calculator.svg" alt="">
+      <img class="deco deco--globe" src="img/globe.svg" alt="">
+      <img class="deco deco--squiggle" src="img/squiggle.svg" alt="">
+    </div>
+
+    <div class="hero__content">
+      <p class="sticker sticker--yellow hero__kicker" data-i18n="home.kicker">★ Class Yearbook Project ★</p>
+      <h1 class="hero__title">
+        <span class="hero__title-small" data-i18n="home.title1">What's your</span>
+        <span class="hero__title-big" data-i18n="home.title2">Favorite</span>
+        <span class="hero__title-small" data-i18n="home.title3">Subject?</span>
+      </h1>
+      <p class="hero__lead" data-i18n="home.lead">
+        Make your own profile card, rate your favorite class and tell us why you love it.
+        Then meet the whole school in the gallery!
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--yellow btn--big" href="input.html"><span aria-hidden="true">✏️</span> <span data-i18n="home.ctaFill">Fill In Your Profile</span></a>
+        <a class="btn btn--pink btn--big" href="profiles.html"><span aria-hidden="true">🎓</span> <span data-i18n="home.ctaSee">See Everyone's Profiles</span></a>
+      </div>
+    </div>
+
+    <!-- Green hills that flow into the next section -->
+    <svg class="hero__hills" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="#137A4B" d="M0,120 C120,60 240,50 360,90 C480,130 560,150 700,100 C840,50 960,30 1100,80 C1240,130 1340,110 1440,70 L1440,220 L0,220 Z"/>
+      <circle cx="210" cy="92" r="34" fill="#0B4D31"/><circle cx="262" cy="104" r="24" fill="#0B4D31"/>
+      <circle cx="1190" cy="98" r="30" fill="#0B4D31"/><circle cx="1236" cy="110" r="20" fill="#0B4D31"/>
+      <path fill="#1A9A5F" d="M0,170 C160,130 300,140 440,165 C600,195 760,175 900,150 C1060,120 1240,140 1440,175 L1440,220 L0,220 Z"/>
+    </svg>
+  </header>
+
+  <main id="main">
+    <!-- ===== LIVE STATS ===== -->
+    <section class="section section--green stats" aria-labelledby="stats-title">
+      <div class="container">
+        <h2 class="section__title" id="stats-title" data-i18n="stat.title">Live Scoreboard</h2>
+        <div class="stats__row" id="statsRow" aria-live="polite">
+          <div class="stat-card stat-card--pink">
+            <span class="stat-card__label" data-i18n="stat.students">Students so far</span>
+            <span class="stat-card__value" id="statTotal">-</span>
+          </div>
+          <div class="stat-card stat-card--yellow">
+            <span class="stat-card__label" data-i18n="stat.top">Most popular subject</span>
+            <span class="stat-card__value stat-card__value--subject" id="statTop">-</span>
+            <span class="stat-card__sub" id="statTopSub"></span>
+          </div>
+          <div class="stat-card stat-card--blue">
+            <span class="stat-card__label" data-i18n="stat.rating">Average rating</span>
+            <span class="stat-card__value" id="statRating">-</span>
+          </div>
+        </div>
+        <p class="stats__error" id="statsError" data-i18n="stat.error" hidden>Could not load the scoreboard right now. Is the server running?</p>
+      </div>
+    </section>
+
+    <!-- ===== HOW IT WORKS ===== -->
+    <section class="section section--green how" aria-labelledby="how-title">
+      <div class="container">
+        <h2 class="section__title" id="how-title" data-i18n="how.title">How It Works</h2>
+        <ol class="how__steps">
+          <li class="step step--yellow">
+            <span class="step__num" aria-hidden="true">1</span>
+            <h3 class="step__title" data-i18n="how.1.title">Fill in the card</h3>
+            <p data-i18n="how.1.text">Add your name, class and favorite subject. Rating and a note are optional.</p>
+          </li>
+          <li class="step step--pink">
+            <span class="step__num" aria-hidden="true">2</span>
+            <h3 class="step__title" data-i18n="how.2.title">Get your profile</h3>
+            <p data-i18n="how.2.text">Your card pops up in the gallery with a colorful avatar made from your initials.</p>
+          </li>
+          <li class="step step--blue">
+            <span class="step__num" aria-hidden="true">3</span>
+            <h3 class="step__title" data-i18n="how.3.title">Meet the class</h3>
+            <p data-i18n="how.3.text">Search, filter by subject and sort to find friends who love the same class.</p>
+          </li>
+        </ol>
+        <div class="how__cta">
+          <a class="btn btn--yellow btn--big" href="input.html"><span aria-hidden="true">✏️</span> <span data-i18n="how.cta">Add my card</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER (blue water wave) ===== -->
+  <footer class="footer">
+    <svg class="footer__wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,50 C180,100 360,0 540,40 C720,80 900,90 1080,40 C1220,5 1340,20 1440,50 L1440,90 L0,90 Z"/>
+    </svg>
+    <div class="footer__inner">
+      <p class="footer__big" data-i18n="footer.big">Made for our class ❤</p>
+      <p class="footer__small" data-i18n="footer.small">A school project built with HTML, CSS, JavaScript and Node.js.</p>
+      <p class="footer__links"><a href="input.html" data-i18n="footer.fill">Fill in your profile</a> · <a href="profiles.html" data-i18n="footer.all">See all profiles</a></p>
+    </div>
+  </footer>
+
+  <script src="js/subjects.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

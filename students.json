@@ -1,0 +1,91 @@
+[
+  {
+    "id": "demo-1",
+    "demo": true,
+    "timestamp": "2026-09-21T08:15:00.000Z",
+    "name": "Aisyah Putri",
+    "className": "8B",
+    "favoriteSubject": "Seni Budaya / Prakarya dan Kewirausahaan (PKWU)",
+    "rating": 5,
+    "note": "Aku suka menggambar dan mencampur warna. Di kelas seni, ideku jadi nyata!"
+  },
+  {
+    "id": "demo-2",
+    "demo": true,
+    "timestamp": "2026-09-22T09:40:00.000Z",
+    "name": "Bima Pratama",
+    "className": "7A",
+    "favoriteSubject": "Matematika",
+    "rating": 4,
+    "note": "Solving puzzles feels like a video game to me."
+  },
+  {
+    "id": "demo-3",
+    "demo": true,
+    "timestamp": "2026-09-23T07:55:00.000Z",
+    "name": "Citra Lestari",
+    "className": "9C",
+    "favoriteSubject": "Geografi",
+    "rating": 5,
+    "note": "I love maps and learning how mountains, rivers and oceans shape our world."
+  },
+  {
+    "id": "demo-4",
+    "demo": true,
+    "timestamp": "2026-09-24T10:05:00.000Z",
+    "name": "Dimas Saputra",
+    "className": "8A",
+    "favoriteSubject": "Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)",
+    "rating": null,
+    "note": ""
+  },
+  {
+    "id": "demo-5",
+    "demo": true,
+    "timestamp": "2026-09-25T11:30:00.000Z",
+    "name": "Eka Wijaya",
+    "className": "7B",
+    "favoriteSubject": "Matematika Tingkat Lanjut",
+    "rating": 5,
+    "note": "Hard problems are my favorite. Nothing beats the moment it finally clicks."
+  },
+  {
+    "id": "demo-6",
+    "demo": true,
+    "timestamp": "2026-09-26T08:20:00.000Z",
+    "name": "Farah Nabila",
+    "className": "9A",
+    "favoriteSubject": "Bahasa Inggris",
+    "rating": 4,
+    "note": ""
+  },
+  {
+    "id": "demo-7",
+    "demo": true,
+    "timestamp": "2026-09-27T13:10:00.000Z",
+    "name": "Galih Ramadhan",
+    "className": "8C",
+    "favoriteSubject": "Sejarah",
+    "rating": null,
+    "note": "Cerita masa lalu terasa seperti film petualangan bagiku."
+  },
+  {
+    "id": "demo-8",
+    "demo": true,
+    "timestamp": "2026-09-28T09:00:00.000Z",
+    "name": "Rafi Anggara",
+    "className": "9B",
+    "favoriteSubject": "Matematika",
+    "rating": 3,
+    "note": "Hard sometimes, but the feeling when I finally get the answer is great."
+  },
+  {
+    "id": "8856206d-e201-4a7a-afa2-e87809631ed1",
+    "timestamp": "2026-09-29T02:21:25.749Z",
+    "name": "Zidan",
+    "className": "XIF 12",
+    "favoriteSubject": "Geografi",
+    "rating": 4,
+    "note": "Anak OSN ABISSS"
+  }
+]

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="profiles.docTitle">Profile Gallery - Favorite Subject</title>
+  <meta name="description" content="Meet the class! Every student's favorite subject as a profile card." data-i18n-attr="content:profiles.desc">
+  <meta name="theme-color" content="#38B6FF">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-profiles">
+  <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
+
+  <header class="page-head">
+    <nav class="site-nav" aria-label="Main" data-i18n-attr="aria-label:nav.label">
+      <a class="site-nav__brand" href="index.html"><span aria-hidden="true">★</span> <span data-i18n="nav.brand">Fav Subject</span></a>
+      <ul class="site-nav__links">
+        <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+        <li><a href="input.html" data-i18n="nav.fillIn">Fill In</a></li>
+        <li><a href="profiles.html" aria-current="page" data-i18n="nav.profiles">Profiles</a></li>
+      </ul>
+      <div class="site-nav__tools">
+        <span class="mode-badge" id="modeBadge" data-mode="loading" title="Where profiles are saved" data-i18n-attr="title:mode.title">
+          <span class="mode-badge__dot" aria-hidden="true"></span>
+          <span class="mode-badge__text">Checking...</span>
+        </span>
+        <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label:lang.label">
+          <button class="lang-switch__btn" type="button" data-lang="id" lang="id" title="Bahasa Indonesia">ID</button>
+          <button class="lang-switch__btn" type="button" data-lang="en" lang="en" title="English">EN</button>
+        </div>
+      </div>
+    </nav>
+    <div class="page-head__decor" aria-hidden="true">
+      <img class="deco deco--sparkle deco--s1" src="img/sparkle.svg" alt="">
+      <img class="deco deco--sparkle deco--s2" src="img/sparkle.svg" alt="">
+      <img class="deco deco--globe deco--head-left" src="img/globe.svg" alt="">
+      <img class="deco deco--calculator deco--head-right" src="img/calculator.svg" alt="">
+    </div>
+    <div class="page-head__content">
+      <h1 class="page-head__title"><span class="page-head__plain" data-i18n="profiles.title1">Meet The</span> <span data-i18n="profiles.title2">Class</span></h1>
+      <p class="page-head__lead" data-i18n="profiles.lead">Everyone's favorite subject in one place. Tap a card to see the full profile.</p>
+    </div>
+    <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,40 C240,100 480,0 720,40 C960,80 1200,10 1440,50 L1440,90 L0,90 Z"/>
+    </svg>
+  </header>
+
+  <main id="main" class="section section--green gallery">
+    <div class="container">
+
+      <!-- Search and sort -->
+      <div class="toolbar">
+        <div class="search">
+          <label class="sr-only" for="search" data-i18n="profiles.searchLabel">Search by name</label>
+          <span class="search__icon" aria-hidden="true">🔍</span>
+          <input class="search__input" type="search" id="search" placeholder="Search by name..." data-i18n-attr="placeholder:profiles.searchPlaceholder" autocomplete="off" maxlength="40">
+        </div>
+        <div class="sort">
+          <label class="sort__label" for="sort" data-i18n="profiles.sortBy">Sort by</label>
+          <select class="sort__select" id="sort">
+            <option value="newest" data-i18n="profiles.sort.newest">Newest first</option>
+            <option value="name" data-i18n="profiles.sort.name">Name A-Z</option>
+            <option value="rating" data-i18n="profiles.sort.rating">Highest rated</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Subject filter chips (built from the data by profiles.js) -->
+      <div class="chips" id="chips" role="group" aria-label="Filter by favorite subject" data-i18n-attr="aria-label:profiles.chipsLabel"></div>
+
+      <p class="result-line" id="resultLine" aria-live="polite"></p>
+
+      <!-- Loading state: skeleton cards -->
+      <div class="grid" id="loading" aria-busy="true" aria-label="Loading profiles" data-i18n-attr="aria-label:profiles.loading">
+        <div class="pcard pcard--skeleton"></div>
+        <div class="pcard pcard--skeleton"></div>
+        <div class="pcard pcard--skeleton"></div>
+        <div class="pcard pcard--skeleton"></div>
+      </div>
+
+      <!-- The real grid of profile cards -->
+      <div class="grid" id="grid" hidden></div>
+
+      <!-- Friendly messages -->
+      <div class="message" id="emptyState" hidden>
+        <p class="message__emoji" aria-hidden="true">🌱</p>
+        <h2 class="message__title" data-i18n="profiles.empty.title">No profiles yet, be the first!</h2>
+        <p data-i18n="profiles.empty.text">The gallery is waiting for its very first card.</p>
+        <a class="btn btn--yellow" href="input.html" data-i18n="profiles.empty.cta">Fill in your profile</a>
+      </div>
+      <div class="message" id="noResults" hidden>
+        <p class="message__emoji" aria-hidden="true">🔎</p>
+        <h2 class="message__title" data-i18n="profiles.none.title">Nobody matches that</h2>
+        <p data-i18n="profiles.none.text">Try a different name or pick another subject.</p>
+        <button class="btn" type="button" id="resetFilters" data-i18n="profiles.none.cta">Show everyone</button>
+      </div>
+      <div class="message" id="errorState" hidden>
+        <p class="message__emoji" aria-hidden="true">😵</p>
+        <h2 class="message__title" data-i18n="profiles.error.title">Could not load the profiles</h2>
+        <p data-i18n="profiles.error.text">Something went wrong talking to the server.</p>
+        <button class="btn btn--pink" type="button" id="retry" data-i18n="profiles.error.cta">Try again</button>
+      </div>
+
+      <p class="updated" id="updated"></p>
+    </div>
+  </main>
+
+  <!-- Detail view: a native <dialog>. It closes with Escape, the close button or a click on the backdrop. -->
+  <dialog class="modal" id="detail" aria-labelledby="detailName">
+    <div class="modal__panel" id="detailPanel">
+      <button class="modal__close" type="button" id="detailClose" aria-label="Close profile" data-i18n-attr="aria-label:profiles.close">×</button>
+      <div id="detailBody"></div>
+    </div>
+  </dialog>
+
+  <footer class="footer footer--small">
+    <svg class="footer__wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,50 C180,100 360,0 540,40 C720,80 900,90 1080,40 C1220,5 1340,20 1440,50 L1440,90 L0,90 Z"/>
+    </svg>
+    <div class="footer__inner">
+      <p class="footer__links"><a href="index.html" data-i18n="footer.home">Home</a> · <a href="input.html" data-i18n="footer.fill">Fill in your profile</a></p>
+    </div>
+  </footer>
+
+  <script src="js/subjects.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/profiles.js"></script>
+</body>
+</html>

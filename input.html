@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="input.docTitle">Fill In Your Profile - Favorite Subject</title>
+  <meta name="description" content="Fill in your profile card: name, class, favorite subject, rating and a note." data-i18n-attr="content:input.desc">
+  <meta name="theme-color" content="#38B6FF">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-input">
+  <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
+
+  <header class="page-head">
+    <nav class="site-nav" aria-label="Main" data-i18n-attr="aria-label:nav.label">
+      <a class="site-nav__brand" href="index.html"><span aria-hidden="true">★</span> <span data-i18n="nav.brand">Fav Subject</span></a>
+      <ul class="site-nav__links">
+        <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+        <li><a href="input.html" aria-current="page" data-i18n="nav.fillIn">Fill In</a></li>
+        <li><a href="profiles.html" data-i18n="nav.profiles">Profiles</a></li>
+      </ul>
+      <div class="site-nav__tools">
+        <span class="mode-badge" id="modeBadge" data-mode="loading" title="Where profiles are saved" data-i18n-attr="title:mode.title">
+          <span class="mode-badge__dot" aria-hidden="true"></span>
+          <span class="mode-badge__text">Checking...</span>
+        </span>
+        <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label:lang.label">
+          <button class="lang-switch__btn" type="button" data-lang="id" lang="id" title="Bahasa Indonesia">ID</button>
+          <button class="lang-switch__btn" type="button" data-lang="en" lang="en" title="English">EN</button>
+        </div>
+      </div>
+    </nav>
+    <div class="page-head__decor" aria-hidden="true">
+      <img class="deco deco--sparkle deco--s1" src="img/sparkle.svg" alt="">
+      <img class="deco deco--sparkle deco--s2" src="img/sparkle.svg" alt="">
+      <img class="deco deco--pencil deco--head-left" src="img/pencil.svg" alt="">
+      <img class="deco deco--book deco--head-right" src="img/book.svg" alt="">
+    </div>
+    <div class="page-head__content">
+      <h1 class="page-head__title"><span class="page-head__plain" data-i18n="input.title1">Your Profile</span> <span data-i18n="input.title2">Card</span></h1>
+      <p class="page-head__lead" data-i18n="input.lead">Two minutes, five little questions. Only the first three are required.</p>
+    </div>
+    <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,40 C240,100 480,0 720,40 C960,80 1200,10 1440,50 L1440,90 L0,90 Z"/>
+    </svg>
+  </header>
+
+  <main id="main" class="section section--green form-section">
+    <div class="container">
+
+      <!-- Success message (hidden until a profile is saved) -->
+      <div class="success" id="success" role="status" tabindex="-1" hidden>
+        <p class="success__emoji" aria-hidden="true">🎉</p>
+        <h2 class="success__title" id="successTitle">Woohoo!</h2>
+        <p class="success__text" data-i18n="success.text">Your profile card is now in the gallery. Go say hi to the class!</p>
+        <div class="success__actions">
+          <a class="btn btn--pink" href="profiles.html" data-i18n="success.gallery">See the gallery</a>
+          <button class="btn" type="button" id="addAnother" data-i18n="success.another">Add another profile</button>
+        </div>
+      </div>
+
+      <div class="form-layout">
+        <form class="form-card" id="profileForm" novalidate>
+          <p class="form-card__tab sticker sticker--pink" data-i18n="input.tab">★ My Profile Card</p>
+
+          <!-- 1. Name -->
+          <div class="field field--yellow">
+            <label class="field__label" for="name"><span class="field__icon" aria-hidden="true">🙂</span> <span data-i18n="input.name.label">What's your name?</span> <span class="badge-req" data-i18n="input.required">required</span></label>
+            <input class="input" type="text" id="name" name="name" maxlength="40" autocomplete="off" placeholder="e.g. Aisyah Putri" data-i18n-attr="placeholder:input.name.placeholder" aria-describedby="name-error" required>
+            <p class="field__error" id="name-error" role="alert"></p>
+          </div>
+
+          <!-- 2. Class -->
+          <div class="field field--pink">
+            <label class="field__label" for="className"><span class="field__icon" aria-hidden="true">🏫</span> <span data-i18n="input.class.label">Which class are you in?</span> <span class="badge-req" data-i18n="input.required">required</span></label>
+            <input class="input" type="text" id="className" name="className" maxlength="20" autocomplete="off" placeholder="e.g. 7A or 8B" data-i18n-attr="placeholder:input.class.placeholder" aria-describedby="className-error" required>
+            <p class="field__error" id="className-error" role="alert"></p>
+          </div>
+
+          <!-- 3. Favorite subject (the options are added by input.js from the official list) -->
+          <div class="field field--blue">
+            <label class="field__label" for="subject"><span class="field__icon" aria-hidden="true">📚</span> <span data-i18n="input.subject.label">Your favorite subject</span> <span class="badge-req" data-i18n="input.required">required</span></label>
+            <select class="input" id="subject" name="subject" aria-describedby="subject-error" required>
+              <option value="" data-i18n="input.subject.choose">Choose a subject...</option>
+            </select>
+            <p class="field__error" id="subject-error" role="alert"></p>
+          </div>
+
+          <!-- 4. Rating (optional) -->
+          <fieldset class="field field--green rating-field">
+            <legend class="field__label"><span class="field__icon" aria-hidden="true">⭐</span> <span data-i18n="input.rating.label">How much do you like it?</span> <span class="badge-opt" data-i18n="input.optional">optional</span></legend>
+            <div class="star-picker" id="starPicker">
+              <!-- five radio buttons, each with a star label (built by input.js) -->
+            </div>
+            <div class="rating-field__row">
+              <span class="rating-field__hint" id="ratingHint">Tap a star, or skip this one.</span>
+              <button class="link-btn" type="button" id="clearRating" data-i18n="input.rating.clear" hidden>Clear rating</button>
+            </div>
+          </fieldset>
+
+          <!-- 5. Note (optional) -->
+          <div class="field field--purple">
+            <label class="field__label" for="note"><span class="field__icon" aria-hidden="true">💬</span> <span data-i18n="input.note.label">Why do you like it?</span> <span class="badge-opt" data-i18n="input.optional">optional</span></label>
+            <textarea class="input input--area" id="note" name="note" maxlength="200" rows="4" placeholder="Why do you like it?" data-i18n-attr="placeholder:input.note.placeholder" aria-describedby="note-count note-error"></textarea>
+            <div class="field__foot">
+              <p class="field__error" id="note-error" role="alert"></p>
+              <span class="counter" id="note-count">0 / 200</span>
+            </div>
+          </div>
+
+          <p class="form-error" id="formError" role="alert" hidden></p>
+
+          <button class="btn btn--yellow btn--big btn--submit" type="submit" id="submitBtn">
+            <span class="btn__label" data-i18n="input.submit">Add me to the gallery!</span>
+          </button>
+          <p class="form-card__link"><span data-i18n="input.lookAround">Just want to look around?</span> <a href="profiles.html" data-i18n="input.seeGallery">See the profile gallery</a></p>
+        </form>
+
+        <!-- Live preview of the card being filled in (desktop only) -->
+        <aside class="preview" aria-hidden="true">
+          <p class="sticker sticker--yellow preview__tab" data-i18n="input.preview">Live preview</p>
+          <div id="previewSlot"></div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer footer--small">
+    <svg class="footer__wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,50 C180,100 360,0 540,40 C720,80 900,90 1080,40 C1220,5 1340,20 1440,50 L1440,90 L0,90 Z"/>
+    </svg>
+    <div class="footer__inner">
+      <p class="footer__links"><a href="index.html" data-i18n="footer.home">Home</a> · <a href="profiles.html" data-i18n="footer.all">See all profiles</a></p>
+    </div>
+  </footer>
+
+  <script src="js/subjects.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/input.js"></script>
+</body>
+</html>
